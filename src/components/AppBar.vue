@@ -1,6 +1,8 @@
 <template>
     <v-app-bar color="orange" dark app>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon>
+            <v-icon>menu</v-icon>
+        </v-app-bar-nav-icon>
         <v-toolbar-title>Scratch</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-text-field flat solo-inverted hide-details color="yellow" prepend-inner-icon="search" class="hidden-xs-only"></v-text-field>
