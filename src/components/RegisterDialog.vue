@@ -1,0 +1,159 @@
+<template>
+    <v-dialog v-model="open" persistent max-width="480">
+        <v-card>
+            <v-card-title class="justify-space-between">
+                <span class="headline">注册</span>
+                <v-btn icon @click="$emit('close')">
+                    <v-icon>close</v-icon>
+                </v-btn>
+            </v-card-title>
+            <v-card-text>
+                <v-form ref="form">
+                    <v-text-field
+                            :value="username"
+                            @input="setUsername"
+                            label="用户名"
+                            color="orange"
+                            :rules="usernameRules"
+                            :counter="18"
+                    >
+                    </v-text-field>
+
+                    <v-text-field
+                            :value="password"
+                            @input="setPassword"
+                            label="密码"
+                            type="password"
+                            color="orange"
+                            :rules="passwordRules"
+                    >
+                    </v-text-field>
+
+                    <v-text-field
+                            v-model="repeatedPassword"
+                            label="重复密码"
+                            type="password"
+                            color="orange"
+                            :rules="repeatedPasswordRules"
+                    >
+                    </v-text-field>
+
+                    <v-text-field
+                            :value="email"
+                            @input="setEmail"
+                            label="邮箱"
+                            type="email"
+                            color="orange"
+                            :rules="emailRules"
+                    >
+
+                    </v-text-field>
+
+                    <v-row>
+                        <v-col cols="6">
+                            <v-text-field
+                                    :value="verificationCode"
+                                    @input="setVerificationCode"
+                                    label="验证码"
+                                    color="orange"
+                                    :rules="verificationCodeRules"
+                                    :counter="4"
+                            >
+
+                            </v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-btn
+                                    x-large
+                                    block
+                                    outlined
+                                    color="orange"
+                                    @click="sendVerificationCode"
+                            >发送验证码
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-btn dark block x-large color="orange" @click="register">注册</v-btn>
+                </v-form>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
+</template>
+
+<script>
+  import {mapState, mapMutations, mapActions} from 'vuex'
+  const namespace = 'register';
+  const instance = {
+    name: 'SignUpDialog',
+    props: {
+      open: {
+        type: Boolean,
+        default: false,
+        required: false,
+      }
+    },
+    data() {
+      return {
+        usernameRules: [
+            username => !!username || "用户名不能为空",
+            username => username.length <= 18 || "用户名不能超过18个字符",
+        ],
+        passwordRules: [
+            password => !!password || "密码不能为空",
+        ],
+        repeatedPassword: null,
+        repeatedPasswordRules: [
+            repeatedPassword => !!repeatedPassword || '重复密码不能为空',
+            repeatedPassword => repeatedPassword === instance.password || '重复密码必须和密码一致',
+        ],
+        emailRules: [
+            email => !!email || "邮箱不能为空",
+            email => /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email) || "邮箱格式不正确",
+        ],
+        verificationCodeRules: [
+            verificationCode => !!verificationCode || "验证码不能为空",
+            verificationCode => /[A-Z0-9]{4}/.test(verificationCode) || "验证码格式不正确",
+        ]
+      }
+    },
+    computed: {
+      ...mapState(namespace, [
+        'username',
+        'email',
+        'password',
+        'verificationCode',
+      ]),
+
+    },
+    methods: {
+      ...mapMutations(namespace, [
+        'setUsername',
+        'setEmail',
+        'setPassword',
+        'setVerificationCode',
+      ]),
+      ...mapActions(namespace, [
+        {
+          sendRegisterRequest: 'register'
+        }, 'sendVerificationCode'
+      ]),
+      async register() {
+        if (this.validate()) {
+          this.sendRegisterRequest();
+        }
+      },
+      validate() {
+        return this.$refs.form.validate();
+      },
+    },
+
+  };
+
+
+
+  export default instance;
+</script>
+
+<style scoped>
+
+</style>
