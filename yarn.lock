@@ -8062,6 +8062,11 @@ vue-cli-plugin-vuetify@^0.6.3:
   resolved "https://registry.npm.taobao.org/vue-cli-plugin-vuetify/download/vue-cli-plugin-vuetify-0.6.3.tgz#71d956cdec419f5628d2b44c43bdc1e6ec3356bf"
   integrity sha1-cdlWzexBn1Yo0rRMQ73B5uwzVr8=
 
+vue-cookies@^1.5.13:
+  version "1.5.13"
+  resolved "https://registry.npm.taobao.org/vue-cookies/download/vue-cookies-1.5.13.tgz#b1ca79a2663bf9a4f36982557011cab5ee2196c0"
+  integrity sha1-scp5omY7+aTzaYJVcBHKte4hlsA=
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"

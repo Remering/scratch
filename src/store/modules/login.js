@@ -1,15 +1,9 @@
-import api from '../../api/login'
+import api from '../../api';
 
 const state = {
-  username: null,
-  password: null,
+  username: "",
+  password: "",
   loginStatus: false,
-};
-
-const getters = {
-  loginStatus: ({loginStatus}) => loginStatus,
-  username: ({username}) => username,
-  userLoginInfo: ({username, password}) => ({username, password})
 };
 
 const mutations = {
@@ -19,18 +13,30 @@ const mutations = {
 };
 
 const actions = {
-  async login({commit, getters, state}) {
-    // eslint-disable-next-line no-console
-    console.log(state);
-    const info = getters.userLoginInfo;
+  async login({commit, state}) {
     try {
-      const response = await api.login(info.username, info.password);
+      const response = await api.login(state);
+      const {message, code} = response.data;
+      if (code === 0) {
+        commit('snackbar/open', {
+          color: "error",
+          message,
+        }, {
+          root: true
+        })
+      }
       // eslint-disable-next-line no-console
       console.log(response);
       commit('setLoginStatus', true);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
+      commit('snackbar/open', {
+        color: "error",
+        message: e,
+      }, {
+        root: true
+      })
     }
   }
 };
@@ -38,7 +44,6 @@ const actions = {
 export default {
   namespaced: true,
   state,
-  getters,
   mutations,
   actions
 }
