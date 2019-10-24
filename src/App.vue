@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <app-bar @sign-in="showSignInDialog" @sign-up="showSignUpDialog"></app-bar>
+    <app-bar @sign-in="showLoginDialog"></app-bar>
     <v-content>
-      <register-dialog :open="signUpDialogOpen" @close="closeSignUpDialog"></register-dialog>
-      <login-dialog :open="signInDialogOpen" @close="closeSignInDialog"></login-dialog>
+      <register-dialog></register-dialog>
+      <login-dialog></login-dialog>
       <snack-bar></snack-bar>
     </v-content>
   </v-app>
@@ -23,23 +23,6 @@ export default {
     AppBar,
     SnackBar,
   },
-  data: () => ({
-    signUpDialogOpen: false,
-    signInDialogOpen: false,
-  }),
-  methods: {
-    showSignUpDialog() {
-      this.signUpDialogOpen = true;
-    },
-    closeSignUpDialog() {
-      this.signUpDialogOpen = false;
-    },
-    showSignInDialog() {
-      this.signInDialogOpen = true;
-    },
-    closeSignInDialog() {
-      this.signInDialogOpen = false;
-    },
-  }
 };
 </script>
+x

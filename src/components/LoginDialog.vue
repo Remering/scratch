@@ -1,16 +1,16 @@
 <template>
-    <v-dialog v-model="open" persistent max-width="480">
+    <v-dialog v-model="dialogState.open" max-width="480" persistent>
         <v-card>
             <v-card-title class="justify-space-between">
                 <span class="headline">登录</span>
-                <v-btn icon @click="$emit('close')">
+                <v-btn icon @click="close">
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-card-title>
             <v-card-text>
                 <v-form ref="form">
                     <v-text-field
-                            :value="username"
+                            :value="userData.username"
                             @input="setUsername"
                             label="用户名或邮箱"
                             color="orange"
@@ -19,7 +19,7 @@
                     </v-text-field>
 
                     <v-text-field
-                            :value="password"
+                            :value="userData.password"
                             @input="setPassword"
                             label="密码"
                             color="orange"
@@ -50,13 +50,6 @@
 
   export default {
     name: "LoginDialog",
-    props: {
-      open: {
-        required: false,
-        default: false,
-        type: Boolean,
-      }
-    },
     data: () => ({
       usernameRules: [
         username => !!username || "用户名不能为空",
@@ -67,23 +60,29 @@
     }),
     computed: {
       ...mapState(namespace, [
-        'username', 'password'
+        'userData', 'dialogState'
+      ]),
+      ...mapActions(namespace, [
+
       ]),
     },
     methods: {
       ...mapActions(namespace, {
           sendLoginRequest: 'login',
         }),
+      ...mapActions(namespace, [
+        'clear',
+      ]),
       ...mapMutations(namespace,[
         'setUsername',
         'setPassword',
+        'close',
       ]),
       login() {
         if (this.$refs.form.validate())
           this.sendLoginRequest();
-      }
-    }
-
+      },
+    },
   };
 </script>
 

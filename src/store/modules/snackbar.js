@@ -1,6 +1,11 @@
+const INFO = 'info';
+const ERROR = 'error'
+const SUCCESS = 'success'
+
+
 const state = {
   open: false,
-  color: "error",
+  color: ERROR,
   message: "",
 };
 
@@ -14,8 +19,30 @@ const mutations = {
   },
 };
 
+const actions = {
+  showInfo ({commit}, message) {
+    commit('open', {
+      color: INFO,
+      message,
+    })
+  },
+  showSuccess ({commit}, message) {
+    commit('open', {
+      color: SUCCESS,
+      message,
+    })
+  },
+  showError ({commit}, message) {
+    commit('open', {
+      color: ERROR,
+      message,
+    })
+  },
+};
+
 export default {
   namespaced: true,
   state,
   mutations,
+  actions,
 }
