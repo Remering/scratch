@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <app-bar @sign-in="showLoginDialog"></app-bar>
+    <app-bar></app-bar>
     <v-content>
       <register-dialog></register-dialog>
       <login-dialog></login-dialog>
