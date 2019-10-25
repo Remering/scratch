@@ -2,11 +2,11 @@ import api from '../../api';
 
 const state = {
   userData: {
-    username: "",
-    password: "",
-    loginStatus: false,
+    username: '',
+    password: '',
   },
   dialogState: {
+    loginStatus: false,
     open: false,
   }
 };
@@ -14,16 +14,16 @@ const state = {
 const mutations = {
   setUsername: (state, username) => state.userData = {...state.userData, username},
   setPassword: (state, password) => state.userData = {...state.userData, password},
-  setLoginStatus: (state, loginStatus) => state.userData = {...state.userData, loginStatus},
+  setLoginStatus: (state, loginStatus) => state.dialogState = {...state.dialogState, loginStatus},
   open: ({dialogState}) => dialogState.open = true,
-  close: ({dialogState}) => dialogState.open = false,
+  close({dialogState, userData}) {
+    dialogState.open = false;
+    userData.username = '';
+    userData.password = '';
+  },
 };
 
 const actions = {
-  clear({commit}) {
-    commit('setUsername', '');
-    commit('setPassword', '');
-  },
   async login({dispatch, commit, state}) {
     try {
       const response = await api.login(state);

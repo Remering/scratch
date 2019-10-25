@@ -3,12 +3,12 @@
         <v-card>
             <v-card-title class="justify-space-between">
                 <span class="headline">登录</span>
-                <v-btn icon @click="close">
+                <v-btn @click="closeDialog" icon>
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-card-title>
             <v-card-text>
-                <v-form ref="form">
+                <v-form lazy-validation ref="form">
                     <v-text-field
                             :value="userData.username"
                             @input="setUsername"
@@ -44,7 +44,7 @@
 
 <script>
 
-  import {mapActions, mapState, mapMutations} from 'vuex'
+  import {mapActions, mapMutations, mapState} from 'vuex';
 
   const namespace = 'login';
 
@@ -82,6 +82,10 @@
         if (this.$refs.form.validate())
           this.sendLoginRequest();
       },
+      closeDialog() {
+        this.close();
+        this.$refs.form.resetValidation();
+      }
     },
   };
 </script>
