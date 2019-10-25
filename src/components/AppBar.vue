@@ -1,6 +1,6 @@
 <template>
-    <v-app-bar color="orange" dark app>
-        <v-app-bar-nav-icon>
+    <v-app-bar absolute app color="orange" dark temporary>
+        <v-app-bar-nav-icon @click="switchDrawer">
             <v-icon>menu</v-icon>
         </v-app-bar-nav-icon>
         <v-toolbar-title>Scratch</v-toolbar-title>
@@ -15,18 +15,18 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex';
+  import {mapMutations, mapState} from 'vuex';
 
-  const REGISTER_NAMESPACE = 'register';
-  const LOGIN_NAMESPACE = 'login';
+  const register = 'register';
+  const login = 'login';
+  const drawer = 'drawer';
   export default {
     name: "AppBar",
     methods: {
-      ...mapMutations(REGISTER_NAMESPACE, {
-         openRegisterDialog: 'open',
-      }),
-      ...mapMutations(LOGIN_NAMESPACE, {
-        openLoginDialog: 'open'
+      ...mapMutations({
+        openRegisterDialog: `${register}/open`,
+        openLoginDialog: `${login}/open`,
+        switchDrawer: `${drawer}/switch`,
       }),
     }
   };
