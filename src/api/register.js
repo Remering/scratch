@@ -1,9 +1,9 @@
-import { client } from './index'
+import {client} from './index';
 
 export default {
   /**
    * Send register request to the server
-   * @param userRegisterInfo const { username: String, password: String, email: String, verificationCode: String } = userRegisterInfo
+   * @param userRegisterInfo const { username: String, password: String, email: String, role: number, verificationCode: String } = userRegisterInfo
    * @returns {Promise<AxiosResponse<T>>}
    */
   async register(userRegisterInfo) {

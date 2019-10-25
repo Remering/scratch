@@ -1,4 +1,4 @@
-import api from '../../api'
+import api from '../../api';
 
 const state = {
   userData: {
@@ -6,11 +6,19 @@ const state = {
     email: '',
     password: '',
     verificationCode: '',
+    role: '',
   },
   dialogState: {
     open: false,
     repeatedPassword: '',
+    roleTypes: [
+      '学生', '老师',
+    ],
   }
+};
+
+const getters = {
+  roleString: ({dialogState, userData}) => dialogState.roleTypes[userData.role],
 };
 
 const mutations = {
@@ -19,19 +27,22 @@ const mutations = {
   setEmail: (state, email) => state.userData = {...state.userData, email},
   setVerificationCode: (state, verificationCode) => state.userData = {...state.userData, verificationCode},
   setRepeatedPassword: (state, repeatedPassword) => state.dialogState = {...state.dialogState, repeatedPassword},
-  close: ({dialogState}) => dialogState.open = false,
+  setRoleString: ({userData, dialogState}, newRoleString) => userData.role = dialogState.roleTypes.indexOf(newRoleString),
   open: ({dialogState}) => dialogState.open = true,
+  close({dialogState, userData}) {
+    dialogState.open = false;
+    userData.username = '';
+    userData.email = '';
+    userData.password = '';
+    dialogState.repeatedPassword = '';
+    userData.verificationCode = '';
+    userData.role = '';
+  },
 };
 
 
 const actions = {
-  clear({commit}) {
-    commit('setUsername', '');
-    commit('setEmail', '');
-    commit('setPassword', '');
-    commit('setVerificationCode', '');
-  },
-  async register({state, dispatch}) {
+  async register({state, dispatch, commit}) {
     try {
       const {code, message} = await api.register(state);
       if (code === 0) {
@@ -42,6 +53,7 @@ const actions = {
         await dispatch('snackbar/showSuccess', '注册成功', {
           root: true,
         });
+        commit('close');
 
       }
     } catch (e) {
@@ -52,7 +64,7 @@ const actions = {
   },
   async sendVerificationCode({state}) {
     try {
-      const respone = await api.sendVerificationCode(state.email)
+      const respone = await api.sendVerificationCode(state.email);
       // eslint-disable-next-line no-console
       console.log(respone)
     } catch (e) {
@@ -66,6 +78,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions,
 }

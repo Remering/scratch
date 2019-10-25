@@ -3,12 +3,12 @@
         <v-card>
             <v-card-title class="justify-space-between">
                 <span class="headline">注册</span>
-                <v-btn icon @click="close">
+                <v-btn @click="closeDialog" icon>
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-card-title>
             <v-card-text>
-                <v-form ref="form">
+                <v-form lazy-validation ref="form">
                     <v-text-field
                             :value="userData.username"
                             @input="setUsername"
@@ -49,6 +49,16 @@
                     >
 
                     </v-text-field>
+
+                    <v-select
+                            :items="dialogState.roleTypes"
+                            :rules="roleRules"
+                            :value="roleString"
+                            @input="setRoleString"
+                            color="orange"
+                            label="类型"
+                    >
+                    </v-select>
 
                     <v-row>
                         <v-col cols="6">
@@ -92,17 +102,11 @@
 </template>
 
 <script>
-  import {mapState, mapMutations, mapActions} from 'vuex'
+  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
+
   const namespace = 'register';
   export default {
     name: 'RegisterDialog',
-    props: {
-      open: {
-        type: Boolean,
-        default: false,
-        required: false,
-      }
-    },
     data() {
       return {
         usernameRules: [
@@ -115,7 +119,7 @@
         repeatedPassword: null,
         repeatedPasswordRules: [
             repeatedPassword => !!repeatedPassword || '重复密码不能为空',
-            repeatedPassword => repeatedPassword === this.password || '重复密码必须和密码一致',
+          repeatedPassword => repeatedPassword === this.userData.password || '重复密码必须和密码一致',
         ],
         emailRules: [
             email => !!email || "邮箱不能为空",
@@ -125,6 +129,9 @@
             verificationCode => !!verificationCode || "验证码不能为空",
             verificationCode => /[A-Z0-9]{4}/.test(verificationCode) || "验证码格式不正确",
         ],
+        roleRules: [
+          role => !!role || '类型不能为空'
+        ]
       }
     },
     computed: {
@@ -132,9 +139,12 @@
         'userData',
         'dialogState',
       ]),
+      ...mapGetters(namespace, [
+        'roleString'
+      ]),
       emailValid() {
-        return this.emailRules.every(rule => rule(this.email) === true);
-      }
+        return this.emailRules.every(rule => rule(this.userData.email) === true);
+      },
     },
     methods: {
       ...mapMutations(namespace, [
@@ -143,7 +153,8 @@
         'setPassword',
         'setVerificationCode',
         'setRepeatedPassword',
-        'close'
+        'setRoleString',
+        'close',
       ]),
       ...mapActions(namespace, [
         'sendVerificationCode', 'clear',
@@ -159,6 +170,10 @@
       },
       validate() {
         return this.$refs.form.validate();
+      },
+      closeDialog() {
+        this.close();
+        this.$refs.form.resetValidation();
       },
     },
 
