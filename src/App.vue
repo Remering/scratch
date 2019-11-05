@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <app-bar></app-bar>
-
     <v-content>
       <add-course-fab-button></add-course-fab-button>
       <register-dialog></register-dialog>
@@ -17,7 +16,7 @@
   import RegisterDialog from '@/components/RegisterDialog';
   import LoginDialog from '@/components/LoginDialog';
   import SnackBar from '@/components/SnackBar';
-  import {USER_NAMESPACE} from '@/store';
+  import {COURSES_NAMESPACE, USER_NAMESPACE} from '@/store';
   import {mapState} from 'vuex';
   import AddCourseFabButton from '@/components/AddCourseFabButton';
 
@@ -34,6 +33,7 @@
       'role'
     ]),
     beforeMount() {
+      this.$store.dispatch(`${COURSES_NAMESPACE}/fetchCourse`);
       if (this.$store.state.user.loginStatus) return;
       if (this.$cookies.keys().length) {
         this.$store.dispatch(`${USER_NAMESPACE}/fetchProfile`);

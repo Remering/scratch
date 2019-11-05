@@ -7,6 +7,7 @@ import router from './plugins/vue-router';
 import store from './store';
 import '@/plugins/vue-video-player';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
+import 'babel-polyfill';
 
 Vue.config.productionTip = false;
 

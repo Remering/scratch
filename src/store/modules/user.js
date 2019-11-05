@@ -5,16 +5,15 @@ import {SNACKBAR_NAMESPACE} from '@/store';
 const DEFAULT_AVATAR_URL = AvatarDefault;
 
 const state = {
-  // username: '',
-  username: 'Remering',
+  username: '',
+  // username: 'Remering',
   avatarUrl: DEFAULT_AVATAR_URL,
-  // role: 0,
-  role: 1,
-  // loginStatus: false,
-  loginStatus: true,
-
-  // email: '',
-  email: '1015488424@qq.com',
+  role: 0,
+  // role: 1,
+  loginStatus: false,
+  // loginStatus: true,
+  email: '',
+  // email: '1015488424@qq.com',
 };
 
 const mutations = {

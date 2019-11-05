@@ -1,5 +1,5 @@
 import api from '@/api';
-import {SNACKBAR_NAMESPACE} from '@/store';
+import {COURSES_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
 
 const state = {
   courseId: -1,
@@ -49,6 +49,9 @@ const actions = {
     });
     const {code, message} = response.data;
     await dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Error' : 'Success'}`, message, {
+      root: true,
+    });
+    dispatch(`${COURSES_NAMESPACE}/fetchCourse`, {
       root: true,
     });
   },

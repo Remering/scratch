@@ -6,6 +6,7 @@ import snackbar from '@/store/modules/snackbar';
 import user from '@/store/modules/user';
 import avatarUploadDialog from '@/store/modules/avatarUploadDialog';
 import courseUpload from '@/store/modules/courseUpload';
+import courses from '@/store/modules/courses';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export const SNACKBAR_NAMESPACE = 'snackbar';
 export const USER_NAMESPACE = 'user';
 export const AVATAR_UPLOAD_DIALOG_NAMESPACE = 'avatarUploadDialog';
 export const COURSE_UPLOAD_NAMESPACE = 'courseUpload';
+export const COURSES_NAMESPACE = 'courses';
 
 export default new Vuex.Store({
   modules: {
@@ -26,6 +28,7 @@ export default new Vuex.Store({
     user,
     avatarUploadDialog,
     courseUpload,
+    courses,
   },
   strict: debug,
 })
