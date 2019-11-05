@@ -1,9 +1,11 @@
 const state = {
-  open: false,
+  isOpen: false,
 };
 
 const mutations = {
-  switch: (state) => state.open = !(state.open),
+  open: (state) => state.isOpen = true,
+  close: (state) => state.isOpen = false,
+
 };
 
 export default {

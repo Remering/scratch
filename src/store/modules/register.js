@@ -22,8 +22,8 @@ const getters = {
 };
 
 const mutations = {
-  setUsername: (state, username) => state.userData = {...state.userData, username},
-  setPassword: (state, password) => state.userData = {...state.userData, password},
+  setUsername: (state, username) => state.userData = {...state.userData, username: username},
+  setPassword: (state, password) => state.userData = {...state.userData, password: password},
   setEmail: (state, email) => state.userData = {...state.userData, email},
   setVerificationCode: (state, verificationCode) => state.userData = {...state.userData, verificationCode},
   setRepeatedPassword: (state, repeatedPassword) => state.dialogState = {...state.dialogState, repeatedPassword},
@@ -40,12 +40,12 @@ const mutations = {
   },
 };
 
-
 const actions = {
   async register({state, dispatch, commit}) {
     try {
-      const {code, message} = await api.register(state);
-      if (code === 0) {
+      const response = await api.register(state.userData);
+      const {code, message} = response.data;
+      if (code) {
         dispatch('snackbar/showError', message, {
           root: true,
         });
@@ -62,14 +62,23 @@ const actions = {
       });
     }
   },
-  async sendVerificationCode({state}) {
+  async sendVerificationCode({state, dispatch}) {
     try {
-      const respone = await api.sendVerificationCode(state.email);
-      // eslint-disable-next-line no-console
-      console.log(respone)
+      const response = await api.sendVerificationCode(state.email);
+      const {code, message} = response.data;
+      if (code) {
+        dispatch('snackbar/showError', message, {
+          root: true,
+        });
+      } else {
+        dispatch('snackbar/showSuccess', '验证码已发送', {
+          root: true,
+        });
+      }
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(e)
+      dispatch('snackbar/showError', e, {
+        root: true,
+      });
     }
   }
 };

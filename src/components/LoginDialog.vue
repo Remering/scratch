@@ -45,8 +45,7 @@
 <script>
 
   import {mapActions, mapMutations, mapState} from 'vuex';
-
-  const namespace = 'login';
+  import {LOGIN_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
 
   export default {
     name: "LoginDialog",
@@ -59,21 +58,21 @@
       ],
     }),
     computed: {
-      ...mapState(namespace, [
+      ...mapState(LOGIN_NAMESPACE, [
         'userData', 'dialogState'
       ]),
-      ...mapActions(namespace, [
+      ...mapActions(LOGIN_NAMESPACE, [
 
       ]),
     },
     methods: {
-      ...mapActions(namespace, {
+      ...mapActions(LOGIN_NAMESPACE, {
           sendLoginRequest: 'login',
         }),
-      ...mapActions(namespace, [
+      ...mapActions(LOGIN_NAMESPACE, [
         'clear',
       ]),
-      ...mapMutations(namespace,[
+      ...mapMutations(LOGIN_NAMESPACE, [
         'setUsername',
         'setPassword',
         'close',
@@ -81,6 +80,8 @@
       login() {
         if (this.$refs.form.validate())
           this.sendLoginRequest();
+        else
+          this.$store.dispatch(`${SNACKBAR_NAMESPACE}/showError`, '信息不足');
       },
       closeDialog() {
         this.close();

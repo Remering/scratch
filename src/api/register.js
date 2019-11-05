@@ -6,8 +6,14 @@ export default {
    * @param userRegisterInfo const { username: String, password: String, email: String, role: number, verificationCode: String } = userRegisterInfo
    * @returns {Promise<AxiosResponse<T>>}
    */
-  async register(userRegisterInfo) {
-    return client.post('/user/register', userRegisterInfo);
+  async register({username, password, email, role, verificationCode}) {
+    return client.post('/user/register', {
+      userName: username,
+      passWord: password,
+      email,
+      role,
+      verificationCode,
+    });
   },
   async sendVerificationCode(email) {
     return client.post('/user/email', {

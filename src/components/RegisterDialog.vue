@@ -51,12 +51,12 @@
                     </v-text-field>
 
                     <v-select
-                            :items="dialogState.roleTypes"
-                            :rules="roleRules"
-                            :value="roleString"
-                            @input="setRoleString"
-                            color="orange"
-                            label="类型"
+                        :items="dialogState.roleTypes"
+                        :rules="roleRules"
+                        :value="roleString"
+                        @input="setRoleString"
+                        color="orange"
+                        label="类型"
                     >
                     </v-select>
 
@@ -103,8 +103,8 @@
 
 <script>
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
+  import {REGISTER_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
 
-  const namespace = 'register';
   export default {
     name: 'RegisterDialog',
     data() {
@@ -119,7 +119,7 @@
         repeatedPassword: null,
         repeatedPasswordRules: [
             repeatedPassword => !!repeatedPassword || '重复密码不能为空',
-          repeatedPassword => repeatedPassword === this.userData.password || '重复密码必须和密码一致',
+          repeatedPassword => repeatedPassword === this.userData.passWord || '重复密码必须和密码一致',
         ],
         emailRules: [
             email => !!email || "邮箱不能为空",
@@ -135,11 +135,11 @@
       }
     },
     computed: {
-      ...mapState(namespace, [
+      ...mapState(REGISTER_NAMESPACE, [
         'userData',
         'dialogState',
       ]),
-      ...mapGetters(namespace, [
+      ...mapGetters(REGISTER_NAMESPACE, [
         'roleString'
       ]),
       emailValid() {
@@ -147,7 +147,7 @@
       },
     },
     methods: {
-      ...mapMutations(namespace, [
+      ...mapMutations(REGISTER_NAMESPACE, [
         'setUsername',
         'setEmail',
         'setPassword',
@@ -156,16 +156,18 @@
         'setRoleString',
         'close',
       ]),
-      ...mapActions(namespace, [
+      ...mapActions(REGISTER_NAMESPACE, [
         'sendVerificationCode', 'clear',
       ]),
-      ...mapActions(namespace,  {
+      ...mapActions(REGISTER_NAMESPACE, {
           sendRegisterRequest: 'register',
         },
       ),
-      async register() {
+      register() {
         if (this.validate()) {
           this.sendRegisterRequest();
+        } else {
+          this.$store.dispatch(`${SNACKBAR_NAMESPACE}/showError`, '信息不足');
         }
       },
       validate() {

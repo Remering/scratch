@@ -1,4 +1,4 @@
-import { client } from './index';
+import {client} from './index';
 
 export default {
   /**
@@ -6,9 +6,11 @@ export default {
    * @param userLoginInfo const { username: string, password: string } = userLoginInfo
    * @returns {Promise<AxiosResponse<T>>}
    */
-  login: async (userLoginInfo) =>
-    client.post('/user/login',
-      userLoginInfo,
-    ),
-
+  login: async ({username, password}) =>
+    client.post('/user/login', {
+      userName: username,
+      passWord: password,
+    }, {
+      withCredentials: true,
+    }),
 };
