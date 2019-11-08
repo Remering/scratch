@@ -1,6 +1,11 @@
 <template>
   <v-row class="pa-2" justify="center">
-    <CourseCard :image-url="pictureUrl" :text="text" :title="name"></CourseCard>
+    <CourseCard
+        :image-url="pictureUrl"
+        :text="introduction"
+        :title="name"
+    >
+    </CourseCard>
     <v-form>
       <v-text-field
           @change="setName"
@@ -39,6 +44,7 @@
           dark
           id="upload-btn"
           width="160"
+          @click="createAndUpload"
       >上传
       </v-btn>
     </v-form>
@@ -46,7 +52,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapState} from 'vuex';
+  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
   import {COURSE_UPLOAD_NAMESPACE} from '@/store';
   import CourseCard from '@/components/CourseCard';
 
@@ -67,6 +73,10 @@
       ...mapMutations(COURSE_UPLOAD_NAMESPACE, [
         'setName', 'setIntroduction', 'setPicture', 'setVideo'
       ]),
+      ...mapActions(COURSE_UPLOAD_NAMESPACE, [
+        'createAndUpload',
+      ]),
+
     }
   };
 </script>

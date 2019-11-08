@@ -16,7 +16,7 @@
   import RegisterDialog from '@/components/RegisterDialog';
   import LoginDialog from '@/components/LoginDialog';
   import SnackBar from '@/components/SnackBar';
-  import {COURSES_NAMESPACE, USER_NAMESPACE} from '@/store';
+  import {COURSES_NAMESPACE, LOGIN_NAMESPACE, USER_NAMESPACE} from '@/store';
   import {mapState} from 'vuex';
   import AddCourseFabButton from '@/components/AddCourseFabButton';
 
@@ -37,6 +37,8 @@
       if (this.$store.state.user.loginStatus) return;
       if (this.$cookies.keys().length) {
         this.$store.dispatch(`${USER_NAMESPACE}/fetchProfile`);
+      } else {
+        this.$store.commit(`${LOGIN_NAMESPACE}/open`);
       }
     }
   };

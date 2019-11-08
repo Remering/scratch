@@ -5,7 +5,7 @@
         <v-form>
           <span class="headline">请输入您的反馈:</span>
           <v-textarea :value="feedbackText" class="headline" color="orange"></v-textarea>
-          <v-btn block color="orange" dark x-large>提交</v-btn>
+          <v-btn @click="submit" block color="orange" dark x-large>提交</v-btn>
         </v-form>
       </v-card-text>
 
@@ -26,7 +26,7 @@
     methods: {
       submit() {
         this.feedbackText = '';
-        this.$store.commit(`${SNACKBAR_NAMESPACE}/showSuccess`, '我们已收到您的反馈');
+        this.$store.dispatch(`${SNACKBAR_NAMESPACE}/showSuccess`, '我们已收到您的反馈');
       }
     }
 

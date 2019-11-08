@@ -3,6 +3,7 @@ import profile from '@/route/profile';
 import logout from '@/route/logout';
 import feedback from '@/route/feedback';
 import courseUpload from '@/route/courseUpload';
+import VideoPlayPage from '@/page/VideoPlayPage';
 
 export const PERSON = 'person';
 // export const MESSAGE = 'message';
@@ -17,4 +18,8 @@ export default [
   logout,
   feedback,
   courseUpload,
+  {
+    path: '/video_play',
+    component: VideoPlayPage,
+  }
 ];

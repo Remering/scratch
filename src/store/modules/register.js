@@ -46,15 +46,15 @@ const actions = {
       const response = await api.register(state.userData);
       const {code, message} = response.data;
       if (code) {
-        dispatch('snackbar/showError', message, {
-          root: true,
-        });
-      } else {
         await dispatch('snackbar/showSuccess', '注册成功', {
           root: true,
         });
         commit('close');
 
+      } else {
+        dispatch('snackbar/showError', message, {
+          root: true,
+        });
       }
     } catch (e) {
       dispatch('snackbar/showError', e, {

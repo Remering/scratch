@@ -13,18 +13,31 @@ export default {
   },
 
   async logout() {
-    return client.get('/user/logout', {
+    return client.get('/logout', {
       withCredentials: true,
     });
   },
   async upload(file) {
-    return client.post('/user/upload', file, {
+    const formData = new FormData();
+    formData.append('file', file);
+    return client.post('/user/uploadAVATARURL', formData, {
       withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
     });
   },
   async createCourse(createCourseInfo) {
-    return client.post('/teacher/createCourse', createCourseInfo, {
+    const formData = new FormData();
+    for (let k in createCourseInfo) {
+      if (createCourseInfo.hasOwnProperty(k))
+        formData.append(k, createCourseInfo[k]);
+    }
+    return client.post('/teacher/createCourse', formData, {
       withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
   },
   async displayCourse() {
@@ -32,10 +45,17 @@ export default {
   },
   async uploadCourse(uploadCourseInfo) {
     const {courseId, name, picture, video} = uploadCourseInfo;
+    const formData = new FormData();
+
+    formData.append('picture', picture);
+    formData.append('video', video);
     return client.post(`/teacher/upload/${courseId}/${name}`, {
-      picture, video,
+      formData,
     }, {
       withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
   },
 };

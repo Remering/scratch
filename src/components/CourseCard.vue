@@ -1,6 +1,6 @@
 <template>
-  <v-card class="flex ma-4" max-width="480">
-    <v-img :src="imageUrl" aspect-ratio="1.7778" class="white--text align-end" max-height="270" max-width="480">
+  <v-card class="ma-4 flex" max-width="480" min-width="160">
+    <v-img :src="imageUrl" aspect-ratio="1.7778" class="orange--text align-end" max-height="270" max-width="480">
       <v-card-title>{{title}}</v-card-title>
     </v-img>
     <v-card-text>{{text}}</v-card-text>
@@ -23,7 +23,13 @@
         type: String,
         required: true,
       },
+      // disableClick: {
+      //   type: Boolean,
+      //   required: false,
+      //   default: false,
+      // }
     }
+
   };
 </script>
 

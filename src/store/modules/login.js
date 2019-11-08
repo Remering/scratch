@@ -25,7 +25,7 @@ const mutations = {
 };
 
 const actions = {
-  async login({dispatch, commit, state}) {
+  async login({dispatch, state}) {
     try {
       const response = await api.login(state.userData);
       const {data, status} = response;
@@ -35,12 +35,12 @@ const actions = {
           root: true,
         });
 
-        commit('user/setLoginStatus', true, {
+        dispatch('user/login', null, {
           root: true,
         });
-        commit('user/setUsername', state.userData.username, {
-          root: true,
-        });
+        // dispatch('user/setUsername', state.userData.username, {
+        //   root: true,
+        // });
       } else if (status === 200) {
         dispatch('snackbar/showError', message, {
           root: true,

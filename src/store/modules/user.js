@@ -33,20 +33,23 @@ const actions = {
       global.$cookies.keys().forEach(key => global.$cookies.remove(key));
       return;
     }
-    const {userName, passWord, email, avatarUrl, role} = data;
+    const {userName, email, avatarUrl, role} = data;
     commit('setUsername', userName);
-    commit('setPassword', passWord);
     commit('setEmail', email);
     commit('setAvatarUrl', avatarUrl);
     commit('setRole', role);
   },
-  async updateProfile({state}) {
+  async updateProfile({state, dispatch}) {
     const {username, email, role, avatarUrl} = state;
-    await api.updateUserProfile({
+    const response = await api.updateUserProfile({
       userName: username,
       email,
       avatarUrl,
       role,
+    });
+    const {code, message} = response.data;
+    dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Success' : 'Error'}`, message, {
+      root: true,
     });
   },
   async logout({commit, dispatch}) {
@@ -54,7 +57,7 @@ const actions = {
       const response = await api.logout();
       const {message, code} = response.data;
       commit('setLoginStatus', false);
-      dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Error' : 'Success'}`, message, {
+      dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Success' : 'Error'}`, message, {
         root: true,
       });
     } catch (e) {
@@ -76,7 +79,14 @@ const actions = {
         root: true,
       });
     }
-  }
+  },
+  async login({commit, dispatch}) {
+    commit('setLoginStatus', true);
+    dispatch('fetchProfile');
+    dispatch('courses/fetchCourse', null, {
+      root: true,
+    });
+  },
 };
 
 export default {

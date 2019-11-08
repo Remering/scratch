@@ -32,12 +32,13 @@ const actions = {
       introduction,
     });
     let {code, message} = response.data;
-    await dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Error' : 'Success'}`, message, {
+    await dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Success' : 'Error'}`, message, {
       root: true,
     });
     if (!code) return;
     const coursesResponse = await api.displayCourse();
     message = coursesResponse.data.message;
+    if (typeof message == 'string') return;
     const course = message.filter(item => item.name === name).first;
     if (!course) return;
     commit('setCourseId', course.uuid);
@@ -47,11 +48,13 @@ const actions = {
     const response = await api.uploadCourse({
       courseId, name, picture, video,
     });
+    // eslint-disable-next-line no-console
+    console.log(response);
     const {code, message} = response.data;
-    await dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Error' : 'Success'}`, message, {
+    await dispatch(`${SNACKBAR_NAMESPACE}/show${code ? 'Success' : 'Error'}`, message, {
       root: true,
     });
-    dispatch(`${COURSES_NAMESPACE}/fetchCourse`, {
+    dispatch(`${COURSES_NAMESPACE}/fetchCourse`, null, {
       root: true,
     });
   },

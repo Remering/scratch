@@ -97,7 +97,6 @@
     'role',
     'email',
   ];
-  const propNames = stateNames.map(name => name.substring(0, 1).toUpperCase() + name.substring(1));
   export default {
     name: 'ProfilePage',
     components: {AvatarUploadDialog},
@@ -129,7 +128,7 @@
         this.edit = true;
       },
       endEdit() {
-        propNames.forEach(propName => this.$store.dispatch(`${USER_NAMESPACE}/update`, propName));
+        this.$store.dispatch(`${USER_NAMESPACE}/updateProfile`);
         this.edit = false;
       },
     }

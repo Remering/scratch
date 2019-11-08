@@ -1,51 +1,64 @@
 <template>
-    <v-dialog v-model="dialogState.open" max-width="480" persistent>
-        <v-card>
-            <v-card-title class="justify-space-between">
-                <span class="headline">登录</span>
-                <v-btn @click="closeDialog" icon>
-                    <v-icon>close</v-icon>
-                </v-btn>
-            </v-card-title>
-            <v-card-text>
-                <v-form lazy-validation ref="form">
-                    <v-text-field
-                            :value="userData.username"
-                            @input="setUsername"
-                            label="用户名或邮箱"
-                            color="orange"
-                            :rules="usernameRules"
-                    >
-                    </v-text-field>
+  <v-dialog max-width="480" persistent v-model="dialogState.open">
+    <v-card>
+      <v-card-title class="justify-space-between">
+        <span class="headline">登录</span>
+        <v-btn @click="closeDialog" icon>
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-card-text>
+        <v-form lazy-validation ref="form">
+          <v-text-field
+              :rules="usernameRules"
+              :value="userData.username"
+              @input="setUsername"
+              color="orange"
+              label="用户名或邮箱"
+          >
+          </v-text-field>
 
-                    <v-text-field
-                            :value="userData.password"
-                            @input="setPassword"
-                            label="密码"
-                            color="orange"
-                            type="password"
-                            :rules="passwordRules"
-                    >
-                    </v-text-field>
+          <v-text-field
+              :rules="passwordRules"
+              :value="userData.password"
+              @input="setPassword"
+              color="orange"
+              label="密码"
+              type="password"
+          >
+          </v-text-field>
+          <v-btn
+              @click="login"
+              block
+              color="orange"
+              dark
+              x-large
+          >登录
+          </v-btn>
+          <div class="heading" id="to-register">
+            还没有账号？
+            <v-btn
+                @click="toRegister"
+                class="heading"
+                color="blue"
+                link
+                text
+            >注册一个
 
-                    <v-btn
-                            dark
-                            block
-                            x-large
-                            color="orange"
-                            @click="login"
-                    >登录
-                    </v-btn>
-                </v-form>
-            </v-card-text>
-        </v-card>
-    </v-dialog>
+            </v-btn>
+
+          </div>
+
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 
   import {mapActions, mapMutations, mapState} from 'vuex';
-  import {LOGIN_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
+  import {LOGIN_NAMESPACE, REGISTER_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
 
   export default {
     name: "LoginDialog",
@@ -86,11 +99,18 @@
       closeDialog() {
         this.close();
         this.$refs.form.resetValidation();
-      }
+      },
+      toRegister() {
+        this.$store.commit(`${LOGIN_NAMESPACE}/close`);
+        this.$store.commit(`${REGISTER_NAMESPACE}/open`);
+      },
     },
   };
 </script>
 
 <style scoped>
-
+  #to-register {
+    display: flex;
+    align-items: baseline;
+  }
 </style>

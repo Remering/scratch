@@ -10,12 +10,11 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'babel-polyfill';
 
 Vue.config.productionTip = false;
-
+Vue.use(VueCookies);
 
 new Vue({
   vuetify,
   VueAxios,
-  VueCookies,
   store,
   router,
   render: h => h(App)
