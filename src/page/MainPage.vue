@@ -18,7 +18,7 @@
   import CourseCard from '@/components/CourseCard';
   import {COURSES_NAMESPACE} from '@/store';
   import {mapGetters, mapState} from 'vuex';
-  import UNKNOWN from '@/assets/unknown.png';
+  import UNKNOWN from '@/assets/unknown.jpg';
 
   export default {
     name: 'MainPage',

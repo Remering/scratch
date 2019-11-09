@@ -1,33 +1,32 @@
 import api from '@/api';
 
 const state = {
-  courses: [],
-  // courses: [
-  //   {
-  //     "name": "Python",
-  //     "uuid": 1
-  //   },
-  //   {
-  //     "name": "JAVA",
-  //     "uuid": 2
-  //   },
-  //   {
-  //     "name": "C/C++",
-  //     "uuid":3
-  //   },
-  //   {
-  //     "name": "C++++",
-  //     "uuid":4
-  //   },
-  //   {
-  //     "name":"测试课程",
-  //     "uuid":8
-  //   },
-  //   {
-  //     "name": "This is a title",
-  //     "uuid":9
-  //   },
-  // ],
+  courses: [
+    {
+      'name': 'Python',
+      'uuid': 1
+    },
+    {
+      'name': 'JAVA',
+      'uuid': 2
+    },
+    {
+      'name': 'C/C++',
+      'uuid': 3
+    },
+    {
+      'name': 'C++++',
+      'uuid': 4
+    },
+    {
+      'name': '测试课程',
+      'uuid': 8
+    },
+    {
+      'name': 'This is a title',
+      'uuid': 9
+    },
+  ],
 };
 
 const getters = {

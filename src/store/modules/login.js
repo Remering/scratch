@@ -41,6 +41,8 @@ const actions = {
         // dispatch('user/setUsername', state.userData.username, {
         //   root: true,
         // });
+
+
       } else if (status === 200) {
         dispatch('snackbar/showError', message, {
           root: true,
