@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import {SNACKBAR_NAMESPACE} from '@/store';
+  import {SNACKBAR_NAMESPACE} from '@/global';
 
   export default {
     name: 'FeedBackPage',
