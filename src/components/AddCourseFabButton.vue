@@ -17,14 +17,14 @@
 </template>
 
 <script>
-  import {USER_NAMESPACE} from '@/store';
   import {mapState} from 'vuex';
+  import {ACCOUNT_NAMESPACE} from '@/global';
 
   export default {
     name: 'AddCourseFabButton',
 
     computed: {
-      ...mapState(USER_NAMESPACE, [
+      ...mapState(ACCOUNT_NAMESPACE, [
         'role',
       ]),
     }
