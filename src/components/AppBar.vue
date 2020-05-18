@@ -47,9 +47,9 @@
 </template>
 
 <script>
-  import {mapMutations, mapState} from 'vuex';
+  import {mapGetters, mapMutations, mapState} from 'vuex';
   import ProfileDropdownMenu from '@/components/ProfileDropdownMenu';
-  import {LOGIN_NAMESPACE, REGISTER_NAMESPACE, USER_NAMESPACE} from '@/store';
+  import {ACCOUNT_NAMESPACE, LOGIN_NAMESPACE, REGISTER_NAMESPACE} from '@/global';
 
   export default {
     name: "AppBar",
@@ -58,7 +58,7 @@
       ...mapState(LOGIN_NAMESPACE, [
         'dialogState', 'userData'
       ]),
-      ...mapState(USER_NAMESPACE, [
+      ...mapGetters(ACCOUNT_NAMESPACE, [
         'loginStatus'
       ])
     },
