@@ -16,9 +16,9 @@
   import RegisterDialog from '@/components/RegisterDialog';
   import LoginDialog from '@/components/LoginDialog';
   import SnackBar from '@/components/SnackBar';
-  import {COURSES_NAMESPACE, LOGIN_NAMESPACE, USER_NAMESPACE} from '@/store';
   import {mapState} from 'vuex';
   import AddCourseFabButton from '@/components/AddCourseFabButton';
+  import {ACCOUNT_NAMESPACE, COURSES_NAMESPACE, LOGIN_NAMESPACE} from '@/global';
 
   export default {
     name: 'App',
@@ -29,14 +29,16 @@
       AppBar,
       SnackBar,
     },
-    computed: mapState(USER_NAMESPACE, [
+    computed: mapState(ACCOUNT_NAMESPACE, [
       'role'
     ]),
     beforeMount() {
       this.$store.dispatch(`${COURSES_NAMESPACE}/fetchCourse`);
-      if (this.$store.state.user.loginStatus) return;
-      if (this.$cookies.keys().length) {
-        this.$store.dispatch(`${USER_NAMESPACE}/fetchProfile`);
+      if (this.$store.state[ACCOUNT_NAMESPACE].loginStatus) return;
+      const token = localStorage.getItem('scratch-jwt-token');
+      if (token) {
+        this.$store.commit(`${ACCOUNT_NAMESPACE}/setToken`, token);
+        this.$store.dispatch(`${ACCOUNT_NAMESPACE}/fetchProfile`);
       } else {
         this.$store.commit(`${LOGIN_NAMESPACE}/open`);
       }
