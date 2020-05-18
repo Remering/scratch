@@ -11,10 +11,10 @@
         <v-form lazy-validation ref="form">
           <v-text-field
               :rules="usernameRules"
-              :value="userData.username"
-              @input="setUsername"
+              :value="userData.account"
+              @input="setAccount"
               color="orange"
-              label="用户名或邮箱"
+              label="邮箱"
           >
           </v-text-field>
 
@@ -58,7 +58,7 @@
 <script>
 
   import {mapActions, mapMutations, mapState} from 'vuex';
-  import {LOGIN_NAMESPACE, REGISTER_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
+  import {LOGIN_NAMESPACE, REGISTER_NAMESPACE, SNACKBAR_NAMESPACE} from '@/global';
 
   export default {
     name: "LoginDialog",
@@ -67,7 +67,7 @@
         username => !!username || "用户名不能为空",
       ],
       passwordRules: [
-        password => !!password || "用户名不能为空",
+        password => !!password || '密码不能为空',
       ],
     }),
     computed: {
@@ -86,7 +86,7 @@
         'clear',
       ]),
       ...mapMutations(LOGIN_NAMESPACE, [
-        'setUsername',
+        'setAccount',
         'setPassword',
         'close',
       ]),
