@@ -2,7 +2,7 @@
   <v-row class="pa-2" justify="center">
     <CourseCard
         :image-url="pictureUrl"
-        :text="introduction"
+        :introduction="introduction"
         :title="name"
     >
     </CourseCard>
@@ -39,12 +39,19 @@
           label="视频"
       >
       </v-file-input>
+      <v-file-input
+          :value="file"
+          @change="setFile"
+          color="orange"
+          label="课件"
+      >
+      </v-file-input>
       <v-btn
           color="orange"
           dark
           id="upload-btn"
           width="160"
-          @click="createAndUpload"
+          @click="createCourse"
       >上传
       </v-btn>
     </v-form>
@@ -53,8 +60,8 @@
 
 <script>
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
-  import {COURSE_UPLOAD_NAMESPACE} from '@/store';
   import CourseCard from '@/components/CourseCard';
+  import {COURSE_UPLOAD_NAMESPACE} from '@/global';
 
   export default {
     name: 'CourseUploadPage',
@@ -63,7 +70,7 @@
     },
     computed: {
       ...mapState(COURSE_UPLOAD_NAMESPACE, [
-        'name', 'introduction', 'picture', 'video',
+        'name', 'introduction', 'picture', 'video', 'file'
       ]),
       ...mapGetters(COURSE_UPLOAD_NAMESPACE, [
         'pictureUrl',
@@ -71,10 +78,10 @@
     },
     methods: {
       ...mapMutations(COURSE_UPLOAD_NAMESPACE, [
-        'setName', 'setIntroduction', 'setPicture', 'setVideo'
+        'setName', 'setIntroduction', 'setPicture', 'setVideo', 'setFile'
       ]),
       ...mapActions(COURSE_UPLOAD_NAMESPACE, [
-        'createAndUpload',
+        'createCourse',
       ]),
 
     }
