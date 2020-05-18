@@ -8,17 +8,18 @@
 </template>
 
 <script>
-  import {mapMutations, mapState} from 'vuex';
-  const namespace = 'snackbar';
-  export default {
-    name: 'SnackBar',
-    computed: mapState(namespace, [
-        'color', 'message', 'open',
-    ]),
-    methods: mapMutations(namespace, [
-      'close', 'setOpen',
-    ]),
-  };
+    import {mapMutations, mapState} from 'vuex';
+    import {SNACKBAR_NAMESPACE} from '@/global';
+
+    export default {
+        name: 'SnackBar',
+        computed: mapState(SNACKBAR_NAMESPACE, [
+            'color', 'message', 'open',
+        ]),
+        methods: mapMutations(SNACKBAR_NAMESPACE, [
+            'close', 'setOpen',
+        ]),
+    };
 </script>
 
 <style scoped>
