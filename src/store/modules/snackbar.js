@@ -1,43 +1,48 @@
-const INFO = 'info';
-const ERROR = 'error';
-const SUCCESS = 'success';
+const SUCCESS = 0;
+const INFO = 1;
+const WARNING = 2;
+const ERROR = 3;
 
+const COLORS = [
+  'success', 'info', 'warning', 'error'
+];
 
 const state = {
   open: false,
-  color: ERROR,
-  message: "",
+  color: COLORS[ERROR],
+  message: '',
 };
 
 const mutations = {
   close: (state) => state.open = false,
   setOpen: (state, newValue) => state.open = newValue,
-  open: (state, {color, message}) => {
+  open: (state, {code, message}) => {
     state.open = true;
-    state.color = color;
+    state.color = COLORS[code];
     state.message = message;
   },
 };
 
 const actions = {
-  showInfo ({commit}, message) {
+  showState({commit}, {code, message}) {
     commit('open', {
-      color: INFO,
-      message,
-    })
+      code,
+      message
+    });
   },
-  showSuccess ({commit}, message) {
-    commit('open', {
-      color: SUCCESS,
-      message,
-    })
+  showSuccess({dispatch}, message) {
+    dispatch('showState', {code: SUCCESS, message});
   },
-  showError ({commit}, message) {
-    commit('open', {
-      color: ERROR,
-      message,
-    })
+  showInfo({dispatch}, message) {
+    dispatch('showState', {code: INFO, message});
   },
+  showWarning({dispatch}, message) {
+    dispatch('showState', {code: WARNING, message});
+  },
+  showError({dispatch}, message) {
+    dispatch('showState', {code: ERROR, message});
+  },
+
 };
 
 export default {
