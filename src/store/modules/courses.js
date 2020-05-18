@@ -1,48 +1,33 @@
 import api from '@/api';
+import {SNACKBAR_NAMESPACE, SUCCESS} from '@/global';
 
 const state = {
-  courses: [
-    {
-      'name': 'Python',
-      'uuid': 1
-    },
-    {
-      'name': 'JAVA',
-      'uuid': 2
-    },
-    {
-      'name': 'C/C++',
-      'uuid': 3
-    },
-    {
-      'name': 'C++++',
-      'uuid': 4
-    },
-    {
-      'name': '测试课程',
-      'uuid': 8
-    },
-    {
-      'name': 'This is a title',
-      'uuid': 9
-    },
-  ],
+  courses: {}
 };
 
 const getters = {
-  rows: ({courses}) => Math.ceil(courses.length / 4)
+  array: ({courses}) => courses ? Object.values(courses) : [],
+  length: (_, {array}) => array.length,
+  get: (_, {array}) => (index) => array[index],
+  getByUUID: ({courses}) => (uuid) => courses[uuid],
 };
 
 const mutations = {
   setCourses: (state, courses) => state.courses = courses
 };
 const actions = {
-  async fetchCourse({commit}) {
-    const response = await api.displayCourse();
-    const {message, code} = response.data;
-    if (code) {
-      commit('setCourses', message);
+  async fetchCourse({commit, dispatch}) {
+    const response = await api.getCourses();
+    const {message, code, courses} = response.data;
+    if (code !== SUCCESS) {
+      dispatch(`${SNACKBAR_NAMESPACE}/showState`, {
+        code, message
+      }, {
+        root: true
+      });
+      return;
     }
+    commit('setCourses', courses);
   }
 };
 
