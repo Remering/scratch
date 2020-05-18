@@ -31,7 +31,7 @@
 
           <v-text-field
               :rules="repeatedPasswordRules"
-              :value="dialogState.repeatedPassword"
+              :value="userData.repeatedPassword"
               @input="setRepeatedPassword"
               color="orange"
               label="重复密码"
@@ -63,7 +63,7 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
-                  :counter="4"
+                  :counter="6"
                   :rules="verificationCodeRules"
                   :value="userData.verificationCode"
                   @input="setVerificationCode"
@@ -103,7 +103,7 @@
 
 <script>
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
-  import {REGISTER_NAMESPACE, SNACKBAR_NAMESPACE} from '@/store';
+  import {REGISTER_NAMESPACE, SNACKBAR_NAMESPACE} from '@/global';
 
   export default {
     name: 'RegisterDialog',
