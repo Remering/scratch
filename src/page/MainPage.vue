@@ -1,28 +1,32 @@
 <template>
   <v-container fluid>
-    <v-row :key="row" class="pa-4 flex-row" justify="space-between" v-for="row in rows">
-      <div :key="col" class="flex" v-for="col of [0, 1, 2, 3]">
-        <course-card
-            :image-url="unknown"
-            :title="courses[(row - 1) * 4 + col].name"
-            text=""
-            v-if="courses[(row - 1) * 4 + col] && courses[(row - 1) * 4 + col].name">
-        </course-card>
+    <v-row
+        class="pa-4 flex-row"
+    >
+      <clickable-course-card
+          :course-uuid="course.uuid"
+          :image-url="course.picture"
+          :introduction="course.introduction"
+          :key="course.uuid"
+          :title="course.name"
+          class="mb-4"
+          v-for="course of array"
 
-      </div>
+      >
+      </clickable-course-card>
     </v-row>
   </v-container>
 </template>
 
 <script>
-  import CourseCard from '@/components/CourseCard';
-  import {COURSES_NAMESPACE} from '@/store';
-  import {mapGetters, mapState} from 'vuex';
+  import {mapGetters} from 'vuex';
   import UNKNOWN from '@/assets/unknown.jpg';
+  import ClickableCourseCard from '@/components/ClickableCourseCard';
+  import {COURSES_NAMESPACE} from '@/global';
 
   export default {
     name: 'MainPage',
-    components: {CourseCard},
+    components: {ClickableCourseCard},
     data() {
       return {
         unknown: UNKNOWN,
@@ -30,11 +34,9 @@
     },
     computed: {
       ...mapGetters(COURSES_NAMESPACE, [
-        'rows'
+        'array', 'get',
       ]),
-      ...mapState(COURSES_NAMESPACE, [
-        'courses',
-      ])
+
     }
   };
 </script>
