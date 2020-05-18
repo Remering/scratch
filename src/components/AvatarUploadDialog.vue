@@ -17,7 +17,7 @@
               placeholder="选择需要上传的头像"
               prepend-icon="camera"
               show-size
-              v-model="file"
+              v-model="avatar"
           >
           </v-file-input>
           <v-btn @click="upload" block color="orange" dark>
@@ -31,15 +31,15 @@
 </template>
 
 <script>
-  import {AVATAR_UPLOAD_DIALOG_NAMESPACE, USER_NAMESPACE} from '@/store';
   import {mapActions, mapMutations, mapState} from 'vuex';
+  import {ACCOUNT_NAMESPACE, AVATAR_UPLOAD_DIALOG_NAMESPACE} from '@/global';
 
   export default {
     name: 'AvatarUploadDialog',
 
     data() {
       return {
-        file: undefined,
+        avatar: null,
         avatarRules: [
           avatar => !!avatar || '文件不能为空',
           avatar => avatar.size <= 2 * 10e6 || '头像文件必须小于2 MB!',
@@ -50,8 +50,8 @@
       'isOpen'
     ]),
     methods: {
-      ...mapActions(USER_NAMESPACE, {
-        uploadAvatar: 'upload'
+      ...mapActions(ACCOUNT_NAMESPACE, {
+        uploadAvatar: 'updateProfile'
       }),
       ...mapMutations(AVATAR_UPLOAD_DIALOG_NAMESPACE, [
         'close'
@@ -59,8 +59,8 @@
       upload() {
         if (this.$refs.form.validate()) {
           // eslint-disable-next-line no-console
-          console.log(this.file);
-          this.uploadAvatar(this.file);
+          // console.log(this.avatar);
+          this.uploadAvatar(this.avatar);
         }
       }
     }
