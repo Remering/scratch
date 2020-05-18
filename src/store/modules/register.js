@@ -1,16 +1,18 @@
 import api from '../../api';
+import {LOGIN_NAMESPACE, SUCCESS} from '@/global';
+import sha256 from 'js-sha256';
 
 const state = {
   userData: {
     username: '',
     email: '',
     password: '',
+    repeatedPassword: '',
     verificationCode: '',
     role: '',
   },
   dialogState: {
     open: false,
-    repeatedPassword: '',
     roleTypes: [
       '学生', '老师',
     ],
@@ -26,7 +28,7 @@ const mutations = {
   setPassword: (state, password) => state.userData = {...state.userData, password: password},
   setEmail: (state, email) => state.userData = {...state.userData, email},
   setVerificationCode: (state, verificationCode) => state.userData = {...state.userData, verificationCode},
-  setRepeatedPassword: (state, repeatedPassword) => state.dialogState = {...state.dialogState, repeatedPassword},
+  setRepeatedPassword: (state, repeatedPassword) => state.userData = {...state.userData, repeatedPassword},
   setRoleString: ({userData, dialogState}, newRoleString) => userData.role = dialogState.roleTypes.indexOf(newRoleString),
   open: ({dialogState}) => dialogState.open = true,
   close({dialogState, userData}) {
@@ -43,17 +45,22 @@ const mutations = {
 const actions = {
   async register({state, dispatch, commit}) {
     try {
-      const response = await api.register(state.userData);
+      const userData = {
+        ...state.userData,
+        password: sha256(state.userData.password),
+        repeatedPassword: sha256(state.userData.repeatedPassword),
+      };
+      const response = await api.register(userData);
       const {code, message} = response.data;
-      if (code) {
-        await dispatch('snackbar/showSuccess', '注册成功', {
-          root: true,
-        });
+      dispatch('snackbar/showState', {
+        code, message
+      }, {
+        root: true
+      });
+      if (code === SUCCESS) {
         commit('close');
-
-      } else {
-        dispatch('snackbar/showError', message, {
-          root: true,
+        commit(`${LOGIN_NAMESPACE}/open`, null, {
+          root: true
         });
       }
     } catch (e) {
@@ -66,15 +73,11 @@ const actions = {
     try {
       const response = await api.sendVerificationCode(state.email);
       const {code, message} = response.data;
-      if (code) {
-        dispatch('snackbar/showError', message, {
-          root: true,
-        });
-      } else {
-        dispatch('snackbar/showSuccess', '验证码已发送', {
-          root: true,
-        });
-      }
+      dispatch('snackbar/showState', {
+        code, message
+      }, {
+        root: true
+      });
     } catch (e) {
       dispatch('snackbar/showError', e, {
         root: true,
