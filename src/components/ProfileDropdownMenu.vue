@@ -20,15 +20,23 @@
           <v-list-item-title>{{item.title}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item @click="logout(routeToRoot)" link>
+        <v-list-item-icon>
+          <v-icon>exit_to_app</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>退出登录</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-menu>
 
 </template>
 
 <script>
-  import {mapState} from 'vuex';
-  import {USER_NAMESPACE} from '@/store';
-  import {EXIT, FEEDBACK, PERSON} from '@/route';
+  import {mapActions, mapState} from 'vuex';
+  import {FEEDBACK, PERSON} from '@/route';
+  import {ACCOUNT_NAMESPACE} from '@/global';
 
   export default {
     name: 'ProfileDropdownMenu',
@@ -51,18 +59,22 @@
             icon: FEEDBACK,
             title: '反馈',
           },
-          {
-            icon: EXIT,
-            title: '退出登录'
-          }
 
         ]
       };
     },
     computed: {
-      ...mapState(USER_NAMESPACE, [
+      ...mapState(ACCOUNT_NAMESPACE, [
         'username', 'avatarUrl', 'role',
       ])
+    },
+    methods: {
+      ...mapActions(ACCOUNT_NAMESPACE, [
+        'logout'
+      ]),
+      routeToRoot() {
+        this.$router.push('/');
+      }
     }
   };
 </script>
