@@ -1,9 +1,10 @@
 import api from '@/api';
-
+import {ACCOUNT_NAMESPACE, SNACKBAR_NAMESPACE, SUCCESS} from '@/global';
+import sha256 from 'js-sha256';
 
 const state = {
   userData: {
-    username: '',
+    account: '',
     password: '',
   },
   dialogState: {
@@ -12,50 +13,49 @@ const state = {
 };
 
 const mutations = {
-  setUsername: (state, username) => state.userData = {...state.userData, username: username},
-  setPassword: (state, password) => state.userData = {...state.userData, password: password},
-  setLoginStatus: (state, loginStatus) => state.dialogState = {...state.dialogState, loginStatus},
-  setAvatarUrl: (state, avatarUrl) => state.dialogState = {...state.dialogState, avatarUrl},
+  setAccount: (state, account) => state.userData = {...state.userData, account},
+  setPassword: (state, password) => state.userData = {...state.userData, password},
   open: ({dialogState}) => dialogState.open = true,
   close({dialogState, userData}) {
     dialogState.open = false;
-    userData.username = '';
+    userData.account = '';
     userData.password = '';
   },
 };
 
 const actions = {
-  async login({dispatch, state}) {
+  async login({dispatch, state, commit}) {
     try {
-      const response = await api.login(state.userData);
-      const {data, status} = response;
-      const {message, code} = data;
-      if (code) {
-        dispatch('snackbar/showSuccess', '登录成功', {
+      const userData = {
+        ...state.userData,
+        password: sha256(state.userData.password)
+      };
+      const response = await api.login(userData);
+      const {message, code, token} = response.data;
+
+      dispatch(`${SNACKBAR_NAMESPACE}/showState`, {
+        code, message
+      }, {
+        root: true
+      });
+
+      if (code === SUCCESS) {
+        commit('close');
+        await dispatch(`${ACCOUNT_NAMESPACE}/updateToken`, token, {
           root: true,
         });
-
-        dispatch('user/login', null, {
-          root: true,
+        await dispatch(`${ACCOUNT_NAMESPACE}/fetchProfile`, null, {
+          root: true
         });
-        // dispatch('user/setUsername', state.userData.username, {
-        //   root: true,
-        // });
-
-
-      } else if (status === 200) {
-        dispatch('snackbar/showError', message, {
-          root: true,
-        });
-      } else {
-        dispatch('snackbar/showError', `错误代码: ${status}`, {
-          root: true,
+        commit(`${ACCOUNT_NAMESPACE}/setEmail`, userData.account, {
+          root: true
         });
       }
+
     } catch (e) {
-      dispatch('snackbar/showError', e, {
+      dispatch(`${SNACKBAR_NAMESPACE}/showError`, e, {
         root: true
-      })
+      });
     }
   }
 };
